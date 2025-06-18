@@ -5,25 +5,22 @@ import Split from "react-split"
 import { Terminal, TrendingUp, Grid2X2, Smartphone, Fullscreen, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
-// URLs actualizadas de Mode Network
 const DEFAULT_URLS = {
   terminal: "https://app.mode.network/terminal/",
   trading: "https://trade.mode.network/perp/PERP_ETH_USDC",
 }
 
-// Tamaños por defecto de los paneles (50% cada uno)
+
 const DEFAULT_SIZES = [50, 50]
 const STORAGE_KEY = "mode-layout-sizes"
 
 export default function ModeLayout() {
-  // Estados principales
   const [sizes, setSizes] = useState<number[]>(DEFAULT_SIZES)
   const [viewMode, setViewMode] = useState<"both" | "terminal" | "trading">("both")
   const [isMobile, setIsMobile] = useState(false)
   const [activeTab, setActiveTab] = useState<"terminal" | "trading">("terminal")
   const [isFullscreen, setIsFullscreen] = useState<"left" | "right" | null>(null)
 
-  // Detectar dispositivo móvil
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768)
@@ -34,7 +31,6 @@ export default function ModeLayout() {
     return () => window.removeEventListener("resize", checkMobile)
   }, [])
 
-  // Cargar tamaños guardados del localStorage
   useEffect(() => {
     const savedSizes = localStorage.getItem(STORAGE_KEY)
     if (savedSizes) {
@@ -49,12 +45,10 @@ export default function ModeLayout() {
     }
   }, [])
 
-  // Guardar tamaños en localStorage
   const saveSizes = useCallback((newSizes: number[]) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(newSizes))
   }, [])
 
-  // Manejar cambio de tamaños
   const handleSizeChange = useCallback(
     (newSizes: number[]) => {
       setSizes(newSizes)
@@ -63,7 +57,6 @@ export default function ModeLayout() {
     [saveSizes],
   )
 
-  // Cambiar modo de vista
   const setView = useCallback(
     (mode: "both" | "terminal" | "trading") => {
       setViewMode(mode)
@@ -75,7 +68,6 @@ export default function ModeLayout() {
     [saveSizes],
   )
 
-  // Pantalla completa para iframes
   const toggleFullscreen = useCallback(
     (panel: "left" | "right") => {
       if (isFullscreen === panel) {
@@ -87,7 +79,6 @@ export default function ModeLayout() {
     [isFullscreen],
   )
 
-  // Componente de iframe sin bordes ni espaciados
   const IframePanel = ({
     url,
     title,
@@ -119,14 +110,13 @@ export default function ModeLayout() {
     </div>
   )
 
-  // Vista móvil con pestañas
   if (isMobile) {
     return (
       <div className="h-screen flex flex-col bg-black">
         {/* Barra superior móvil */}
         <div className="bg-black border-b border-gray-800 p-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Smartphone className="h-5 w-5 text-yellow-400" />
+            <Smartphone className="h-5 w-5 text-[#DFFE00]" />
             <h1 className="font-semibold text-white">MODE</h1>
           </div>
           <div className="flex gap-1">
@@ -134,7 +124,7 @@ export default function ModeLayout() {
               size="sm"
               variant={activeTab === "terminal" ? "default" : "outline"}
               onClick={() => setActiveTab("terminal")}
-              className="text-xs bg-yellow-400 text-black hover:bg-yellow-500"
+              className="text-xs bg-[#DFFE00] text-black hover:bg-[#DFFE00]"
             >
               Terminal
             </Button>
@@ -142,14 +132,13 @@ export default function ModeLayout() {
               size="sm"
               variant={activeTab === "trading" ? "default" : "outline"}
               onClick={() => setActiveTab("trading")}
-              className="text-xs bg-yellow-400 text-black hover:bg-yellow-500"
+              className="text-xs bg-[#DFFE00] text-black hover:bg-[#DFFE00]"
             >
               Trading
             </Button>
           </div>
         </div>
 
-        {/* Contenido móvil sin padding */}
         <div className="flex-1">
           {activeTab === "terminal" ? (
             <IframePanel url={DEFAULT_URLS.terminal} title="Mode Terminal AI" panel="left" />
@@ -161,7 +150,6 @@ export default function ModeLayout() {
     )
   }
 
-  // Modal de pantalla completa
   if (isFullscreen) {
     return (
       <div className="fixed inset-0 z-50 bg-black">
@@ -184,14 +172,12 @@ export default function ModeLayout() {
     )
   }
 
-  // Vista de escritorio
   return (
     <div className="h-screen flex flex-col bg-black">
-      {/* Barra de controles superior - estilo Mode Network */}
       <div className="bg-black border-b border-gray-800 px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-8">
           <div className="flex items-center gap-2">
-            <div className="text-yellow-400 font-bold text-xl">MODE</div>
+            <div className="text-[#DFFE00] font-bold text-xl">MODE</div>
           </div>
 
           <div className="flex gap-1">
@@ -201,7 +187,7 @@ export default function ModeLayout() {
               onClick={() => setView("terminal")}
               className={`${
                 viewMode === "terminal"
-                  ? "bg-yellow-400 text-black hover:bg-yellow-500"
+                  ? "bg-[#DFFE00] text-black hover:bg-[#DFFE00]"
                   : "text-gray-300 hover:text-white hover:bg-gray-800"
               }`}
             >
@@ -215,7 +201,7 @@ export default function ModeLayout() {
               onClick={() => setView("trading")}
               className={`${
                 viewMode === "trading"
-                  ? "bg-yellow-400 text-black hover:bg-yellow-500"
+                  ? "bg-[#DFFE00] text-black hover:bg-[#DFFE00]"
                   : "text-gray-300 hover:text-white hover:bg-gray-800"
               }`}
             >
@@ -229,7 +215,7 @@ export default function ModeLayout() {
               onClick={() => setView("both")}
               className={`${
                 viewMode === "both"
-                  ? "bg-yellow-400 text-black hover:bg-yellow-500"
+                  ? "bg-[#DFFE00] text-black hover:bg-[#DFFE00]"
                   : "text-gray-300 hover:text-white hover:bg-gray-800"
               }`}
             >
@@ -240,10 +226,8 @@ export default function ModeLayout() {
         </div>
       </div>
 
-      {/* Área principal sin padding ni bordes */}
       <div className="flex-1">
         {viewMode === "both" ? (
-          // Vista dividida con ambos paneles
           <Split
             sizes={sizes}
             minSize={200}
@@ -255,16 +239,11 @@ export default function ModeLayout() {
             cursor="col-resize"
             onDragEnd={handleSizeChange}
             className="flex h-full"
-            resizerStyle={{
-              background: "#374151",
-              cursor: "col-resize",
-            }}
           >
             <IframePanel url={DEFAULT_URLS.terminal} title="Mode Terminal AI" panel="left" />
             <IframePanel url={DEFAULT_URLS.trading} title="Mode Trading" panel="right" />
           </Split>
         ) : (
-          // Vista de panel único
           <div className="h-full">
             {viewMode === "terminal" && (
               <IframePanel url={DEFAULT_URLS.terminal} title="Mode Terminal AI" panel="left" />
